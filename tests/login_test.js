@@ -14,11 +14,18 @@ test("Login with correct username and password", async t => {
     .expect(ProductsPage.inventoryList.visible).ok("inventory list should appear"); 
 });
 
-
 test("Login with incorrect password", async t => {
   await t
     .typeText(LoginPage.usernameInput, "standard_user")    
     .typeText(LoginPage.passwordInput, "incorrect_password")
     .click(LoginPage.loginButton)          
     .expect(LoginPage.error.innerText).contains("Username and password do not match any user in this service")
+});
+
+test("Login with locked out user", async t => {
+  await t
+    .typeText(LoginPage.usernameInput, "locked_out_user")    
+    .typeText(LoginPage.passwordInput, "secret_sauce")
+    .click(LoginPage.loginButton)          
+    .expect(LoginPage.error.innerText).contains("Sorry, this user has been locked out.")
 });
